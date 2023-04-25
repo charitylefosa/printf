@@ -1,3 +1,4 @@
+#include "main"
 #include<stdio.h>
 #include <stdarg.h>
 /**
