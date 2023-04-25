@@ -1,36 +1,47 @@
-#include <stdio.h>
+#include <unistd.h>
 #include <stdarg.h>
 #include "main.h"
+#include <string.h>
+#include <stdio.h>
 /**
-*print_c- prints a character
-*@args: arguments
-*@count: count characters
-*Return: count
+*print_c - prints a character
+*@args: characters to be printed in va_list
+*Return: number of characters printed
 */
-int print_c(va_list args, int count)
+int print_c(va_list args)
 {
-	int c = va_arg(args, int);
-
-	count += putchar(c);
+	char c = va_arg(args, int);
+	int count = 1;
+	putchar(c);
 	return (count);
 }
 
 /**
 *print_s- prints a string
-*@args: arguments
-*@count: count characters
-*Return: count
+*@args: characters to be printed in va_list
+*Return: number of characters printed
 */
-int print_s(va_list args, int count)
+int print_s(va_list args)
 {
 	char *s = va_arg(args, char *);
+	int l;
 
-	while (*s)
-	{
-		count += putchar(*s);
-		s++;
-	}
-	return (count);
+	if (s == NULL)
+		s = "(null)";
+	l = 0;
+	while(s[l])
+		l++;
+	write(1, s, l);
+	return (l);
+}
+
+/**
+*print_p- prints a percent sign
+*Return: number of characters printed
+*/
+int print_p(void)
+{
+	return (putchar('%'));
 }
 
 /**
@@ -41,30 +52,35 @@ int print_s(va_list args, int count)
 */
 int h_specifier(char specifier, va_list args)
 {
-	int count = 0;
+	int count;
 
+	count = 0;
 	switch (specifier)
 	{
 		case 'c':
 		{
-			return (print_c(args, count));
+			count = print_c(args);
+			break;
 		}
 		case 's':
 		{
-			return (print_s(args, count));
+			count = print_s(args);
+			break;
 		}
 		case '%':
 		{
-			putchar('%');
-			return (1);
+			count += print_s(args);
+			break;
 		}
 		default:
 		{
-			putchar('%');
+			putchar ('%');
 			putchar(specifier);
-			return (2);
+			count += 2;
+			break;
 		}
 	}
+	return (count);
 }
 
 /**
@@ -75,22 +91,29 @@ int h_specifier(char specifier, va_list args)
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int count = 0;
+	int i, count;
 
+	if (format == NULL)
+	{
+		return (-1);
+	}
 	va_start(args, format);
 
-	while (*format != '\0')
+	count = 0;
+	i = 0;
+	while (format[0])
 	{
-		if (*format == '%')
+		if (format[i] == '%')
 		{
-			format++;
-			count += h_specifier(*format, args);
+			i++;
+			count = h_specifier(format[i], args);
 		}
 		else
 		{
-			count += putchar(*format);
+			putchar(format[i]);
+			count++;
 		}
-		format++;
+		i++;
 	}
 	va_end(args);
 	return (count);
