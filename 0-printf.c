@@ -1,70 +1,46 @@
-#include<stdio.h>
-#include<stdarg.h>
-#include"main.h"
+#include "main.h"
+int (*get_print(char s))(va_list, flags_t *);
+int get_flag(char s, flags_t *f);
 /**
-*
-*
-*
+*_printf- produces output according to a format
+*@format: format string containing the characters and the specifiers
+*Return: length of the formatted output string
 */
-void check(va_list args, buffet_t *output)
+int _printf(const char *format, ...)
 {
-	va_end(args);
-	write (1, output -> start, output -> len);
-	free_buffer(output);
-}
-
-int run(const char *format, va_list args, buffet_t *output)
-{
-	int i, wid, prec, ret = 0;
-	char tmp;
-	unsigned char flags, len;
-	unsigned int (*f)(va_list, buffet_t *, unsigned char, int, unsigned char);
-
-	for (i = 0; *(format + 1); i++)
-	{
-		len = 0;
-		if (*(format + 1) == '%')
-		{
-
-			flags = handle_flags(format + i + 1. &tmp);
-			wid = handle_width(args, format + i + tmp + 1, &tmp);
-			prec = handle_precision(args, format + i + tmp + 1, &tmp);
-			len = handle_length(format + i + tmp + 1, &tmp);
-			f = handle_specifiers(format i + tmp + 1);
-			if (f != NULL)
-			{
-				i += temp + 1;
-				ret =+ f(args, output, flags, wid, prec, len);
-				continue;
-			}
-			else if (*(format + i + tmp + 1) == '\0')
-			{
-					ret = -1;
-					break;
-			}
-		}
-		ret += _memcpy(output, (format + i), 1);
-		i += (len != 0) ? 1 : 0;
-	}
-	check(args, output);
-	return (ret);
-}
-
-
-int _printf(const char *format)
-{
+	int (*pfunc)(va_list, flags_t *);
+	const char *p;
 	va_list args;
-	buffer_t *output = init_buffet();
+	flags_t flags = {0, 0, 0};
 
-	if (format == NULL || output == NULL)
-		return (-1);
+	register int count = 0;
 
 	va_start(args, format);
-
-	int ret = run(format, args, output);
-
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (p = format; *p; p++)
+	{
+		if (*p == '%')
+		{
+			p++;
+			if (*p == '%')
+			{
+				count += _putchar('%');
+				continue;
+			}
+			while (get_flag(*p, &flags))
+				p++;
+			pfunc = get_print(*p);
+			count += (pfunc)
+				? pfunc(args, &flags)
+				: _printf("%%%&c", *p);
+		}
+		else
+			count += _putchar(*p);
+	}
+	_putchar(-1);
 	va_end(args);
-	check(args, output);
-
-	return (ret);
+	return (count);
 }
