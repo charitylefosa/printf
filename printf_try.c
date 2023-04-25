@@ -29,7 +29,7 @@ int print_string(const char *s)
 {
 	int count;
 
-	count =0;
+	count = 0;
 	while (*s)
 	{
 		putchar(*s++);
