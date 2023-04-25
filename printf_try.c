@@ -8,7 +8,7 @@
 int print_percent(void)
 {
 	putchar('%');
-	return (1);
+	return (0);
 }
 /**
 *print_char - handles character conversion specifiers
@@ -18,7 +18,7 @@ int print_percent(void)
 int print_char(char c)
 {
 	putchar(c);
-	return (1);
+	return (0);
 }
 /**
 *print_string - handles string conversion specifiers
