@@ -69,6 +69,9 @@ int _printf(const char *format, ...)
 				case 's':
 					count += print_string(va_arg(args, const char *));
 					break;
+				case 'r':
+					count += print_string("%r");
+					break;
 				default:
 					putchar(*p);
 					count++;
