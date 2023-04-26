@@ -10,3 +10,8 @@ printf group project
 	i
 2. Handle the following conversion specifiers:
 	b
+3. Handle the following conversion specifiers:
+	u
+	o
+	x
+	X
