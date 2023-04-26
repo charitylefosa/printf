@@ -2,6 +2,11 @@
 #include <stdarg.h>
 #include "main.h"
 
+/**
+*function that produces output according to a format.
+*Returns: the number of characters printed
+*(excluding the null byte used to end output to strings)
+*/
 
 int _printf(const char *format, ...)
 {
@@ -13,7 +18,8 @@ int _printf(const char *format, ...)
 
 	p = format;
 	count = 0;
-	while (*p)	{
+	while (*p)
+	{
 		if (*p == '%')
 		{
 			p++;
