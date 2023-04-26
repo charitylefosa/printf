@@ -2,6 +2,11 @@
 #include <stdarg.h>
 #include "main.h"
 
+/**
+* _printf - produces output according to a format
+* @format: format string containing the characters and the specifiers
+* Return: length of the formatted output string
+*/
 
 int _printf(const char *format, ...)
 {
@@ -13,7 +18,8 @@ int _printf(const char *format, ...)
 
 	p = format;
 	count = 0;
-	while (*p)	{
+	while (*p)
+	{
 		if (*p == '%')
 		{
 			p++;
