@@ -3,9 +3,9 @@
 #include "main.h"
 
 /**
-*function that produces output according to a format.
-*Returns: the number of characters printed
-*(excluding the null byte used to end output to strings)
+* _printf - produces output according to a format
+* @format: format string containing the characters and the specifiers
+* Return: length of the formatted output string
 */
 
 int _printf(const char *format, ...)
