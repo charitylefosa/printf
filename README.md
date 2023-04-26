@@ -8,3 +8,5 @@ printf group project
 1. Handle the following conversion specifiers:
 	d
 	i
+2. Handle the following conversion specifiers:
+	b
